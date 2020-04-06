@@ -5,7 +5,7 @@ import { LEADERS } from '../shared/leaders';
 
 const History = () => {
     return (
-        <Card title='Our History' style={{height: '10%'}}>
+        <Card title='Our History' style={{ height: '10%' }}>
             <Text style={{ margin: 10, fontSize: 9 }}>
                 Started in 2010, Ristorante con Fusion quickly established itself as a culinary icon par excellence in Hong Kong. With its unique brand of world fusion cuisine that can be found nowhere else, it enjoys patronage from the A-list clientele in Hong Kong.  Featuring four of the best three-star Michelin chefs in the world, you never know what will arrive on your plate the next time you visit us.</Text>
             <Text style={{ margin: 10, fontSize: 9 }}>
@@ -21,22 +21,22 @@ class AboutUs extends Component {
         const renderMenuItem = ({ item, index }) => {
 
             return (
-                <ListItem                
+                <ListItem
                     key={index}
-                    title={<Text style={{fontSize: 12, fontWeight: 'bold'}}>{item.name}</Text>}
-                    subtitle={<Text style={{fontSize: 10}}>{item.description}</Text>}
-                    leftAvatar={{ source: item.image }}
+                    title={<Text style={{ fontSize: 12, fontWeight: 'bold' }}>{item.name}</Text>}
+                    subtitle={<Text style={{ fontSize: 10 }}>{item.description}</Text>}
+                    leftAvatar={{ source: require("./images/alberto.png") }}
                 />
             );
         };
 
         return (
-            <ScrollView 
+            <ScrollView
                 alwaysBounceVertical
-                showsVerticalScrollIndicator = "false"
-                style={{marginBottom: '5%'}}>
+                showsVerticalScrollIndicator="false"
+                style={{ marginBottom: '5%' }}>
                 <History />
-                <Card title='Corporate Leaders' style={{marginBottom: '32%'}}>
+                <Card title='Corporate Leaders' style={{ marginBottom: '32%' }}>
                     <FlatList
                         showsVerticalScrollIndicator={false}
                         data={LEADERS}
