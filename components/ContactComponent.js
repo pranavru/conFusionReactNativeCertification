@@ -12,6 +12,7 @@ const contactDetails = {
 };
 
 const ContactUs = (props) => {
+
     return (
         <Card
             title="Contact Information"

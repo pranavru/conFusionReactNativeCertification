@@ -16,6 +16,10 @@ const History = () => {
 }
 
 class AboutUs extends Component {
+
+    static navigationOptions = {
+        title: 'About Us'
+    };
     //state = {  }
     render() {
         const renderMenuItem = ({ item, index }) => {
