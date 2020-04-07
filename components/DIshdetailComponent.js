@@ -4,8 +4,6 @@ import { Card, Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 
 import { baseUrl } from '../shared/baseUrl';
-import { DISHES } from '../shared/dishes';
-import { COMMENTS } from '../shared/comments';
 import { postFavorite } from '../redux/ActionCreators';
 
 const mapStateToProps = state => {
@@ -73,15 +71,6 @@ function RenderComments(props) {
 }
 
 class DishDetail extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            dishes: DISHES,
-            comments: COMMENTS,
-            favorites: []
-        };
-    }
 
     static navigationOptions = {
         title: 'Dish Details'

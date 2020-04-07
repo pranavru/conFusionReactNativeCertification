@@ -4,7 +4,6 @@ import { ListItem, Card } from 'react-native-elements';
 
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
-import { LEADERS } from '../shared/leaders';
 
 import { Loading } from './LoadingComponent';
 

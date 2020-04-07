@@ -3,9 +3,6 @@ import { Text, ScrollView, View } from 'react-native';
 import { Card } from 'react-native-elements';
 import { connect } from 'react-redux';
 
-import { DISHES } from '../shared/dishes';
-import { PROMOTIONS } from '../shared/promotions';
-import { LEADERS } from '../shared/leaders';
 import { baseUrl } from '../shared/baseUrl';
 
 import { Loading } from './LoadingComponent';
@@ -56,15 +53,6 @@ function RenderItem(props) {
 }
 
 class Home extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            dishes: DISHES,
-            promotions: PROMOTIONS,
-            leaders: LEADERS
-        };
-    }
 
     static navigationOptions = {
         title: 'Home',
