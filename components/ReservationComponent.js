@@ -36,7 +36,7 @@ class Reservation extends Component {
             showModal: false
         });
     }
-    
+
     render() {
         return (
             <ScrollView>
@@ -100,7 +100,7 @@ class Reservation extends Component {
 
                 <Modal animationType={"slide"} transparent={false}
                     visible={this.state.showModal}
-                    onDismiss={() => this.toggleModal()}
+                    // onDismiss={() => this.toggleModal()}
                     onRequestClose={() => this.toggleModal()}>
                     <View style={styles.modal}>
                         <Text style={styles.modalTitle}>Your Reservation</Text>
@@ -109,7 +109,7 @@ class Reservation extends Component {
                         <Text style={styles.modalText}>Date and Time: {this.state.date}</Text>
 
                         <Button
-                            onPress={() => { this.resetForm(); }}
+                            onPress={() => { this.toggleModal(); this.resetForm(); }}
                             color="#512DA8"
                             title="Close"
                         />
