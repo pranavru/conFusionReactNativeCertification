@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Modal, Alert } from 'react-native';
 import { Card } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
-import * as Animatable from 'react-native-animatable'
+import * as Animatable from 'react-native-animatable';
+import { Notifications } from 'expo';
+import * as Permissions from 'expo-permissions';
 
 class Reservation extends Component {
     constructor(props) {
@@ -19,6 +21,33 @@ class Reservation extends Component {
     static navigationOptions = {
         title: 'Reserve Table',
     };
+
+    async obtainNotificationPermission() {
+        let permission = await Permissions.getAsync(Permissions.USER_FACING_NOTIFICATIONS);
+        if (permission.status !== 'granted') {
+            permission = await Permissions.askAsync(Permissions.USER_FACING_NOTIFICATIONS);
+            if (permission.status !== 'granted') {
+                Alert.alert('Permission not granted to show notifications');
+            }
+        }
+        return permission;
+    }
+
+    async presentLocalNotification(date) {
+        await this.obtainNotificationPermission();
+        Notifications.presentLocalNotificationAsync({
+            title: 'Your Reservation',
+            body: 'Reservation for ' + date + ' requested',
+            ios: {
+                sound: true
+            },
+            android: {
+                sound: true,
+                vibrate: true,
+                color: '#512DA8'
+            }
+        });
+    }
 
     toggleModal() {
         this.setState({ showModal: !this.state.showModal });
@@ -100,7 +129,12 @@ class Reservation extends Component {
                                         'Number of Guests: ' + this.state.guests + '\nSmoking? ' + this.state.smoking + '\nDate and Time: ' + this.state.date,
                                         [
                                             { text: 'Cancel', onPress: () => { this.resetForm(); console.log('Cancel Pressed') }, style: 'cancel' },
-                                            { text: 'OK', onPress: () => { this.resetForm(); } },
+                                            {
+                                                text: 'OK', onPress: () => {
+                                                    this.presentLocalNotification(this.state.date);
+                                                    this.resetForm();
+                                                }
+                                            },
                                         ],
                                         { cancelable: false }
                                     );
