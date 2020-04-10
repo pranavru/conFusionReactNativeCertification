@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 import { Card, Button, Icon } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 import * as MailComposer from 'expo-mail-composer';
@@ -27,12 +27,12 @@ class ContactUs extends Component {
         return (
             <Animatable.View animation='fadeInDown' duration={2000} delay={1000} >
                 <Card title="Contact Information" >
-                    <Text style={{ margin: 10 }}>{contactDetails.addressLine1}</Text>
-                    <Text style={{ margin: 10 }}>{contactDetails.addressLine2}</Text>
-                    <Text style={{ margin: 10 }}>{contactDetails.city}</Text>
-                    <Text style={{ margin: 10 }}>Tel: {contactDetails.telNumber}</Text>
-                    <Text style={{ margin: 10 }}>Fax: {contactDetails.fax}</Text>
-                    <Text style={{ margin: 10 }}>Email: {contactDetails.email}</Text>
+                    <Text style={styles.textCss}>{contactDetails.addressLine1}</Text>
+                    <Text style={styles.textCss}>{contactDetails.addressLine2}</Text>
+                    <Text style={styles.textCss}>{contactDetails.city}</Text>
+                    <Text style={styles.textCss}>Tel: {contactDetails.telNumber}</Text>
+                    <Text style={styles.textCss}>Fax: {contactDetails.fax}</Text>
+                    <Text style={styles.textCss}>Email: {contactDetails.email}</Text>
                     <Button
                         title="Send Email"
                         buttonStyle={{ backgroundColor: "#512DA8" }}
@@ -45,4 +45,8 @@ class ContactUs extends Component {
     }
 }
 
+
+const styles = StyleSheet.create({
+    textCss: { margin: 10 }
+});
 export default ContactUs;
