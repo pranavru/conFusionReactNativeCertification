@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, Platform, Text, ScrollView, Image, StyleSheet } from 'react-native';
+import { View, Platform, Text, ScrollView, Image, StyleSheet, ToastAndroid } from 'react-native';
+import NetInfo from '@react-native-community/netinfo';
 import { createStackNavigator, createDrawerNavigator, DrawerItems, SafeAreaView } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
@@ -312,17 +313,19 @@ class Main extends Component {
     this.props.fetchComments();
     this.props.fetchPromos();
     this.props.fetchLeaders();
-  }
 
-  onDishSelect(dishId) {
-    this.setState({ selectedDish: dishId })
   }
 
   render() {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      console.log('Connection type', state.type);
+      console.log('Is connected?', state.isConnected);
+    });
 
     return (
       <View style={{ flex: 1, paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight }}>
         <MainNavigator />
+        {unsubscribe}
       </View>
     );
   }
