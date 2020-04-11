@@ -29,6 +29,7 @@
     "android": {
       "package": "net.food.confusion.confusion"
     },
-    "description": ""
+    "description": "",
+    "githubUrl": "https://github.com/pranavru/conFusionReactNativeCertification"
   }
 }
