@@ -20,7 +20,7 @@
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
-      "**/*"
+      "assets/*"
     ],
     "ios": {
       "supportsTablet": true,
@@ -30,6 +30,7 @@
       "package": "net.food.confusion.confusion"
     },
     "description": "",
-    "githubUrl": "https://github.com/pranavru/conFusionReactNativeCertification"
+    "githubUrl": "https://github.com/pranavru/conFusionReactNativeCertification",
+    "entryPoint": "node_modules/expo/AppEntry.js"
   }
 }
