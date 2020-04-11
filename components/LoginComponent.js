@@ -4,10 +4,10 @@ import { Input, CheckBox, Button, Icon } from 'react-native-elements';
 import * as ImagePicker from 'expo-image-picker';
 import * as SecureStore from 'expo-secure-store';
 import * as Permissions from 'expo-permissions';
+import * as ImageManipulator from 'expo-image-manipulator';
+
 import { createBottomTabNavigator } from 'react-navigation';
 import { baseUrl } from '../shared/baseUrl';
-import { Camera, Asset, ImageManipulator } from 'expo';
-
 
 class LoginTab extends Component {
 
@@ -153,18 +153,42 @@ class RegisterTab extends Component {
 
     }
 
+    getImageFromGallery = async () => {
+        try {
+            const cameraPermission = await Permissions.askAsync(Permissions.CAMERA);
+            const cameraRollPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+            if (cameraPermission.status === 'granted' && cameraRollPermission.status === 'granted') {
+                let result = await ImagePicker.launchImageLibraryAsync({
+                    mediaTypes: ImagePicker.MediaTypeOptions.All,
+                    allowsEditing: true,
+                    aspect: [4, 3],
+                    quality: 1,
+                });
+                if (!result.cancelled) {
+                    this.processImage(result.uri);
+                }
+
+                console.log(result);
+            }
+        } catch (E) {
+            console.log(E);
+        }
+    };
+
     processImage = async (imageUri) => {
-        let processedImage = await ImageManipulator.manipulate(
-            imageUri, 
+        let processedImage = await ImageManipulator.manipulateAsync(
+            imageUri,
             [
-                {resize: {width: 400}}
+                { resize: { width: 400 } }
             ],
-            {format: 'png'}
+            { format: 'png' }
         );
         console.log(processedImage);
-        this.setState({imageUrl: processedImage.uri });
+        this.setState({ imageUrl: processedImage.uri });
 
     }
+
 
     static navigationOptions = {
         title: 'Register',
@@ -198,6 +222,11 @@ class RegisterTab extends Component {
                         <Button
                             title="Camera"
                             onPress={this.getImageFromCamera}
+                            style={{ marginHorizontal: '5%' }}
+                        />
+                        <Button
+                            title="Gallery"
+                            onPress={this.getImageFromGallery}
                         />
                     </View>
                     <Input

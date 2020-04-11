@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Modal, Alert } from 'react-native';
-import { Card } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import * as Animatable from 'react-native-animatable';
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
+import * as Calendar from 'expo-calendar';
 
 class Reservation extends Component {
     constructor(props) {
@@ -33,6 +33,17 @@ class Reservation extends Component {
         return permission;
     }
 
+    async obtainCalendarPermission() {
+        let permissionCalendar = await Permissions.getAsync(Permissions.CALENDAR);
+        if (permissionCalendar.status !== 'granted') {
+            permissionCalendar = await Permissions.askAsync(Permissions.CALENDAR);
+            if (permissionCalendar.status !== 'granted') {
+                Alert.alert('Permission not granted to show notifications');
+            }
+        }
+        return permissionCalendar;
+    }
+
     async presentLocalNotification(date) {
         await this.obtainNotificationPermission();
         Notifications.presentLocalNotificationAsync({
@@ -47,6 +58,38 @@ class Reservation extends Component {
                 color: '#512DA8'
             }
         });
+    }
+
+    async getDefaultCalendarSource() {
+        const calendars = await Calendar.getCalendarsAsync();
+        const defaultCalendars = calendars.filter(each => each.source.name === 'Default');
+        return defaultCalendars[0].source;
+    }
+
+
+    async addReservationToCalendar(date) {
+        await this.obtainCalendarPermission();
+        const defaultCalendarSource =
+            Platform.OS === 'ios'
+                ? await this.getDefaultCalendarSource()
+                : { isLocalAccount: true, name: 'Expo Calendar' };
+        const newCalendarID = await Calendar.createCalendarAsync({
+            title: "Your Reservation",
+            color: "#512DA8",
+            entityType: Calendar.EntityTypes.EVENT,
+            sourceId: defaultCalendarSource.id,
+            source: defaultCalendarSource,
+            name: 'internalCalendarName',
+            ownerAccount: 'personal',
+            accessLevel: Calendar.CalendarAccessLevel.OWNER,
+        })
+        console.log("New Calendar Id is: " + newCalendarID);
+        const eventSet = await Calendar.createEventAsync(newCalendarID, {
+            title: "Con Fusion Table Reservation",
+            startDate: Date.parse(date),
+            endDate: (Date.parse(date) + (2 * 60 * 60 * 1000)),
+        })
+        console.log("Event is set: " + eventSet);
     }
 
     toggleModal() {
@@ -77,7 +120,7 @@ class Reservation extends Component {
                             <Picker
                                 style={styles.formItem}
                                 selectedValue={this.state.guests}
-                                onValueChange={(itemValue, itemIndex) => this.setState({ guests: itemValue })}>
+                                onValueChange={(itemValue) => this.setState({ guests: itemValue })}>
                                 <Picker.Item label="1" value="1" />
                                 <Picker.Item label="2" value="2" />
                                 <Picker.Item label="3" value="3" />
@@ -132,6 +175,7 @@ class Reservation extends Component {
                                             {
                                                 text: 'OK', onPress: () => {
                                                     this.presentLocalNotification(this.state.date);
+                                                    this.addReservationToCalendar(this.state.date);
                                                     this.resetForm();
                                                 }
                                             },
